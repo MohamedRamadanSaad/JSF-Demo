@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f = "http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Employee</title>
+    </h:head>
+    <h:body>
+        <p:layout style="min-width:400px;min-height:200px;" fullPage="true">
+            <p:layoutUnit position="north" resizable="true" size="300" minSize="40" maxSize="800">
+                <h:form>
+                    <p:growl id="growl" showDetail="true" />
+                    <p:panel header="Employee Information" >
+                        <!-- Person Information-->
+                        <h:panelGrid columns="4" id="lastNamePanel" >
+                            
+                            <h:outputText value="Name: *" />
+                            <p:inputText value="#{userData.name}" required="true" label="Name" id="last"/>
+ 
+                            <h:outputText value="Department: *" />
+                            <p:selectOneMenu id="city" value="#{userData.department}" effect="fold" editable="true">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{department.cities}" />
+                            </p:selectOneMenu> 
+ 
+                            <h:outputText value="Age: *" />
+                            <p:inputText value="#{userData.age}" required="true" label="Age"/>
+ 
+                            <h:outputText value="Salary: *" />
+                            <p:inputText value="#{userData.salary}"  required="true" label="Salary"  />
+                            
+                        </h:panelGrid>
+                        </p:panel>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Save" action="#{userData.addEmployee}" ajax="true"  update=":dataForm"/>
+                        <p:commandButton value="Reset" type="reset"/>
+                    </h:panelGrid>
+                </h:form>
+             
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center"  >
+                <h:form id="dataForm">
+                    <p:dataTable var="employee" value="#{userData.employees}" 
+                             rows="4"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="3,5,10"
+                             editable="true">
+                    <p:column headerText="Name" >
+                        <h:outputText value="#{employee.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Department">
+                        <h:outputText value="#{employee.department}" />
+                    </p:column>
+                     
+                    <p:column headerText="Age">
+                        <h:outputText value="#{employee.age}" />
+                    </p:column>
+                    
+                    <p:column headerText="Salary">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{employee.salary}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{employee.salary}" style="width:100%" label="Salary"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="Delete">
+                        <p:commandButton  value="Delete" action="#{userData.deleteEmployee(employee)}" style="margin-right:20px;" update="@form" ajax="true"/>
+                        
+                    </p:column> 
+                    <p:column headerText="Edit" style="width:35px">
+                        <p:rowEditor>
+                        </p:rowEditor>
+                    </p:column>
+                </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+        <br/>
+        
+    </h:body>
+</html>
+
